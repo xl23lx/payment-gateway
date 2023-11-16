@@ -4,11 +4,3 @@ interface User{
     username:string;
     password:string;
 }
-interface Login{
-    username:string;
-    password:string;
-}
-interface LoginResponse{
-    message:string;
-    access_token?:string;
-}
