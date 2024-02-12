@@ -19,13 +19,6 @@ export class AuthController {
             msg: 'User logged in'
         };
     }
-    @UseGuards(AuthenticatedGuard)
-    @Get('/profile')
-    async profile():Promise<object>{
-        return{
-            data:'data'
-        }
-    }
     @Get('/logout')
     logout(@Req() req): any {
     req.session.destroy();

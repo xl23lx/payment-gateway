@@ -1,6 +1,7 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Res, UseGuards } from "@nestjs/common";
 import { UserService } from "./user.service";
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { AuthenticatedGuard } from "../auth/autheticated.guard";
 
 @Controller('user')
 export class UserController{
@@ -8,12 +9,13 @@ export class UserController{
         private readonly userService: UserService
     ) {}
     @Post('/register')
-    @HttpCode(201)
-    async register(@Body() userData:UserData, @Res() response:Response):Promise<any>{
-        let user = await this.userService.register(userData);
-        if(!user){
-            response.status(HttpStatus.CONFLICT).send({message:"Username already exist!"});
-        }
-        return response.status(HttpStatus.CREATED).send(user);
+    @HttpCode(HttpStatus.CREATED)
+    async register(@Body() userData:UserData):Promise<User>{
+        return await this.userService.register(userData);
+    }
+    @UseGuards(AuthenticatedGuard)
+    @Get('/:id')
+    async getUser(@Param() params:any):Promise<User>{
+        return await this.userService.getUser(params.id);
     }
 }

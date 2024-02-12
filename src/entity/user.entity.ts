@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, Up
 @Entity()
 export class User {
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
   
     @Column()
     first_name: string;

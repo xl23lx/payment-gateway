@@ -1,6 +1,7 @@
-import { Injectable, NotAcceptableException, UseGuards } from "@nestjs/common";
+import { Injectable, NotAcceptableException, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "src/entity/user.entity";
+import { User } from "../entity/user.entity";
+
 import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 
@@ -13,7 +14,10 @@ export class AuthService{
     async login(username:string,password:string):Promise<any>{
         const user = await this.usersRepository.findOneBy({username});
         if (!user) {
-            throw new NotAcceptableException('Login failed');
+            throw new UnauthorizedException('Login failed');
+        }
+        if(!user.is_active){
+            throw new UnauthorizedException('Login failed');
         }
         const passwordValid = await bcrypt.compare(password, user.password)
         if (user && passwordValid) {

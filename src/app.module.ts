@@ -21,13 +21,19 @@ import { UserModule } from './user/user.module';
         type:configService.get<TypeOrmModuleOptions>('database.type',{
           infer:true,
         }),
-        port:parseInt(configService.get<string>('database.port')),
-        host:configService.get<string>('database.host'),
-        username:configService.get<string>('database.username'),
-        password:configService.get<string>('database.password'),
-        database:configService.get<string>('database.name'),
+        url:`postgresql://${configService.get<string>('database.username')}:${configService.get<string>('database.password')}@${configService.get<string>('database.host')}:${configService.get<string>('database.port')}/${configService.get<string>('database.name')}?sslmode=verify-full`,
+        ssl:true,
         entities:[__dirname+'/**/*.entity{.ts,.js}'],
-        synchronize:true
+        synchronize:true,
+        encrypt:true
+        // port:parseInt(configService.get<string>('database.port')),
+        // host:configService.get<string>('database.host'),
+        // username:configService.get<string>('database.username'),
+        // password:configService.get<string>('database.password'),
+        // database:configService.get<string>('database.name'),
+        // entities:[__dirname+'/**/*.entity{.ts,.js}'],
+        // synchronize:true,
+        // encrypt:true
       }),
       inject:[ConfigService]
     }),
