@@ -28,7 +28,7 @@ describe('UserController', () => {
         is_active:false
       };
       jest.spyOn(service, 'getUser').mockImplementation(async () => result);
-      expect(await service.getUser('id')).toBe(result);
+      expect(await controller.getUser('id')).toBe(result);
     });
   })
 
@@ -46,7 +46,7 @@ describe('UserController', () => {
         is_active:false
       };
       jest.spyOn(service, 'register').mockImplementation(async () => result);
-      expect(await service.register(userData)).toBe(result);
+      expect(await controller.register(userData)).toBe(result);
     });
   })
   

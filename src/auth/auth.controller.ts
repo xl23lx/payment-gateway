@@ -2,7 +2,6 @@ import { Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from
 import { AuthService } from './auth.service';
 import { Request } from 'express';
 import { LocalAuthGuard } from './local.auth.guard';
-import { AuthenticatedGuard } from './autheticated.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +19,7 @@ export class AuthController {
         };
     }
     @Get('/logout')
+    @HttpCode(200)
     logout(@Req() req): any {
     req.session.destroy();
     return { msg: 'User logged out' }

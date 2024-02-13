@@ -25,15 +25,7 @@ import { UserModule } from './user/user.module';
         ssl:true,
         entities:[__dirname+'/**/*.entity{.ts,.js}'],
         synchronize:true,
-        encrypt:true
-        // port:parseInt(configService.get<string>('database.port')),
-        // host:configService.get<string>('database.host'),
-        // username:configService.get<string>('database.username'),
-        // password:configService.get<string>('database.password'),
-        // database:configService.get<string>('database.name'),
-        // entities:[__dirname+'/**/*.entity{.ts,.js}'],
-        // synchronize:true,
-        // encrypt:true
+        encrypt:true,
       }),
       inject:[ConfigService]
     }),
