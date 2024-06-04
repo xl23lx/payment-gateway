@@ -8,6 +8,9 @@ import { User } from './entity/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 import { UserModule } from './user/user.module';
+import { TransactionModule } from './transaction/transaction.module';
+import { HealthController } from './health/health.controller';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -30,7 +33,9 @@ import { UserModule } from './user/user.module';
       inject:[ConfigService]
     }),
     AuthModule,
-    UserModule
+    UserModule,
+    TransactionModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
