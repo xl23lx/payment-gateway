@@ -3,7 +3,6 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { Repository } from 'typeorm';
 import { User } from '../entity/user.entity';
-import { Response } from 'express';
 import { mock } from 'jest-mock-extended';
 
 describe('UserController', () => {
@@ -25,7 +24,9 @@ describe('UserController', () => {
         password:'',
         created_at:new Date(),
         updated_at:new Date(),
-        is_active:false
+        is_active:false,
+        is_admin:false,
+        transactions:[]
       };
       jest.spyOn(service, 'getUser').mockImplementation(async () => result);
       expect(await controller.getUser('id')).toBe(result);
@@ -43,7 +44,9 @@ describe('UserController', () => {
         password:'',
         created_at:new Date(),
         updated_at:new Date(),
-        is_active:false
+        is_active:false,
+        is_admin:false,
+        transactions:[]
       };
       jest.spyOn(service, 'register').mockImplementation(async () => result);
       expect(await controller.register(userData)).toBe(result);

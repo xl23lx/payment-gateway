@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Transaction } from './transaction.entity';
 
 @Entity()
 export class User {
@@ -25,4 +26,10 @@ export class User {
   
     @Column({ default: true })
     is_active: boolean;
+
+    @Column({ default: false })
+    is_admin: boolean;
+
+    @OneToMany(()=>Transaction,(transaction)=>transaction.user)
+    transactions:Transaction[]
 }
