@@ -27,6 +27,9 @@ export class User {
     @Column({ default: true })
     is_active: boolean;
 
+    @Column({ default: false })
+    is_admin: boolean;
+
     @OneToMany(()=>Transaction,(transaction)=>transaction.user)
     transactions:Transaction[]
 }

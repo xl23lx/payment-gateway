@@ -1,16 +1,16 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { DataSource } from 'typeorm';
-import { User } from './entity/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 import { UserModule } from './user/user.module';
 import { TransactionModule } from './transaction/transaction.module';
-import { HealthController } from './health/health.controller';
 import { HealthModule } from './health/health.module';
+import { validateIfAdmin } from './middleware/user_verification.middleware';
+import { UserController } from './user/user.controller';
 
 @Module({
   imports: [
@@ -41,6 +41,13 @@ import { HealthModule } from './health/health.module';
   providers: [AppService],
 })
 
-export class AppModule {
+export class AppModule implements NestModule {
   constructor(private dataSource: DataSource) {}
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(validateIfAdmin)
+      .exclude({path:'user/register', method:RequestMethod.POST})
+      .forRoutes(UserController);
+  }
 }

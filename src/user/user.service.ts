@@ -1,8 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { BadGatewayException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../entity/user.entity";
 import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
+import { plainToClass } from "class-transformer";
+import { UserResponseDto } from "./user.dto";
+import { validate } from "class-validator";
 @Injectable()
 export class UserService{
     constructor(
@@ -28,7 +31,7 @@ export class UserService{
         delete userData.password;
         return userData;
     }
-    async getUser(id:string):Promise<User>{
+    async getUser(id:string):Promise<User | undefined>{
         let user=await this.usersRepository.findOneBy({id});
         if(!user){
             throw new HttpException({
@@ -40,7 +43,14 @@ export class UserService{
             HttpStatus.NOT_FOUND,
             );
         }
-        delete user.password
-        return user;
+        const userResponseDto=plainToClass(UserResponseDto,user);
+
+        const errors=await validate(userResponseDto);
+
+        if(errors.length){
+            throw new BadGatewayException('Invalid User');
+        }
+        
+        return userResponseDto;
     }
 }
