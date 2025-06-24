@@ -18,6 +18,16 @@ export class TransactionService{
         return this.transactionRepository.save(transaction)
     }
 
+    async getAllTransaction(user:any):Promise<Transaction[]>{
+        return this.transactionRepository.find({
+            where:{
+                user:{
+                    id:user.id
+                }
+            }
+        })
+    }
+
     async getTransaction(transactionId:string):Promise<Transaction | undefined>{
         let transaction = await this.transactionRepository.findOne({
             relations:{

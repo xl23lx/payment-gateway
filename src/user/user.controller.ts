@@ -14,7 +14,7 @@ export class UserController{
     }
     @UseGuards(AuthenticatedGuard)
     @Get('/:id')
-    async getUser(@Param() params:any):Promise<User>{
-        return this.userService.getUser(params.id);
+    async getUser(@Param('id') id:string):Promise<User>{
+        return this.userService.getUser(id);
     }
 }

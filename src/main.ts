@@ -8,11 +8,7 @@ declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors({
-    origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
-  });
+  app.enableCors();
   app.use(
     session({
       secret: process.env.SESSION_SECRET,
@@ -33,7 +29,7 @@ async function bootstrap() {
         .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  await app.listen(3000);
+  await app.listen(4000);
 
   if (module.hot) {
     module.hot.accept();
