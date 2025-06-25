@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -15,22 +20,30 @@ import { UserController } from './user/user.controller';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal:true,
-      load:[configuration]
+      isGlobal: true,
+      load: [configuration],
     }),
     TypeOrmModule.forRootAsync({
-      imports:[ConfigModule],
-      useFactory:async (configService:ConfigService)=>({
-        type:configService.get<TypeOrmModuleOptions>('database.type',{
-          infer:true,
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        type: configService.get<TypeOrmModuleOptions>('database.type', {
+          infer: true,
         }),
-        url:`postgresql://${configService.get<string>('database.username')}:${configService.get<string>('database.password')}@${configService.get<string>('database.host')}:${configService.get<string>('database.port')}/${configService.get<string>('database.name')}?sslmode=verify-full`,
-        ssl:true,
-        entities:[__dirname+'/**/*.entity{.ts,.js}'],
-        synchronize:true,
-        encrypt:true,
+        url: `postgresql://${configService.get<string>(
+          'database.username',
+        )}:${configService.get<string>(
+          'database.password',
+        )}@${configService.get<string>(
+          'database.host',
+        )}:${configService.get<string>(
+          'database.port',
+        )}/${configService.get<string>('database.name')}?sslmode=verify-full`,
+        ssl: true,
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: true,
+        encrypt: true,
       }),
-      inject:[ConfigService]
+      inject: [ConfigService],
     }),
     AuthModule,
     UserModule,
@@ -40,14 +53,13 @@ import { UserController } from './user/user.controller';
   controllers: [AppController],
   providers: [AppService],
 })
-
 export class AppModule implements NestModule {
   constructor(private dataSource: DataSource) {}
 
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(validateIfAdmin)
-      .exclude({path:'user/register', method:RequestMethod.POST})
+      .exclude({ path: 'user/register', method: RequestMethod.POST })
       .forRoutes(UserController);
   }
 }

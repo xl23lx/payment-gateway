@@ -1,13 +1,17 @@
 import { UnauthorizedException } from '@nestjs/common';
-import {Request,Response,NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 
-export function validateIfAdmin(req:Request,res:Response,next:NextFunction){
-    let user:any=req.user;
-    if(!user){
-        throw new UnauthorizedException('You cannot perform this action');
-    }
-    if(user.is_admin===false){
-        throw new UnauthorizedException('You cannot perform this action');
-    }
-    next();
+export function validateIfAdmin(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const user: any = req.user;
+  if (!user) {
+    throw new UnauthorizedException('You cannot perform this action');
+  }
+  if (user.is_admin === false) {
+    throw new UnauthorizedException('You cannot perform this action');
+  }
+  next();
 }

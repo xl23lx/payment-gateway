@@ -1,35 +1,42 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Transaction } from './transaction.entity';
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-  
-    @Column()
-    first_name: string;
-  
-    @Column()
-    last_name: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({unique:true})
-    username:string;
+  @Column()
+  first_name: string;
 
-    @Column()
-    password:string;
+  @Column()
+  last_name: string;
 
-    @CreateDateColumn()
-    created_at:Date;
+  @Column({ unique: true })
+  username: string;
 
-    @UpdateDateColumn()
-    updated_at:Date
-  
-    @Column({ default: true })
-    is_active: boolean;
+  @Column()
+  password: string;
 
-    @Column({ default: false })
-    is_admin: boolean;
+  @CreateDateColumn()
+  created_at: Date;
 
-    @OneToMany(()=>Transaction,(transaction)=>transaction.user)
-    transactions:Transaction[]
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @Column({ default: true })
+  is_active: boolean;
+
+  @Column({ default: false })
+  is_admin: boolean;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.user)
+  transactions: Transaction[];
 }
